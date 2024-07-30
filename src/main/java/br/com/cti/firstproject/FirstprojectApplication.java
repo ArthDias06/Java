@@ -1,11 +1,14 @@
 package br.com.cti.firstproject;
 
-import br.com.cti.firstproject.model.DadosSerie;
+import br.com.cti.firstproject.model.DadosCharacter;
 import br.com.cti.firstproject.service.ConsumoApi;
 import br.com.cti.firstproject.service.ConverteDados;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class FirstprojectApplication implements CommandLineRunner {
@@ -17,11 +20,14 @@ public class FirstprojectApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		var consumoApi = new ConsumoApi();
-		var json = consumoApi.obterDados("https://www.omdbapi.com/?t=gilmore+girls&apikey=6585022c");
-		System.out.println(json);
-		ConverteDados conversor = new ConverteDados();
-		DadosSerie dados = conversor.obterDados(json, DadosSerie.class);
-		System.out.println(dados);
+		List<DadosCharacter> personagem = new ArrayList();
+		for(int i = 1; i<=10;i++){
+			ConsumoApi consumoApi = new ConsumoApi();
+			var json = consumoApi.obterDados("https://rickandmortyapi.com/api/character/"+i);
+			ConverteDados conversor = new ConverteDados();
+			DadosCharacter dados = conversor.obterDados(json, DadosCharacter.class);
+			personagem.add(dados);
+		}
+		personagem.forEach(System.out::println);
 	}
 }
